@@ -1,20 +1,59 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# WebAuthn Test UI
+This repo contains the front end for the WebAuthn-Test application. The Webauthn-Test
+application is simply a basic sample of passwordless and usernameless authentication with WebAuthn.
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Application Structure
+The complete application contains two parts:
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+1. Web API
+2. Frontend
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+The front end is implemented as a static web site using Vue.js and Nuxt.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+In production and in development, the web API and front end are hosted separately, but requests to the API are
+proxied by the front end server, thus eliminating cross-origin issues and allowing cookies to be used for authentication.
+In production, nginx is used to serve the front end and proxy requests to the web API.
+
+The API is available in the webauthn-test-api repo.
+
+The Frontend Vue app was created with the following npm command:
+
+```npm init nuxt-app@latest ./src/ui```
+
+## Build
+Make sure the API project is cloned first before continuing. Then, to run the complete solution, start the API before
+the frontend. Consult the API repo Readme to learn how to run the API.
+
+Once the API is running, the front end can be run using Docker Linux containers by executing the following command at the repo root:
+
+```docker-compose up```
+
+...and then opening your browser to https://localhost:10000.
+
+If your browser warns you the site is unsafe, you can either "proceed as unsafe" or add the development certificate to
+your certificate store to avoid the warning again. This development certificate must not be used in production!
+It was created using the `dotnet dev-certs https` CLI command.
+
+### Configuration
+The following environment variables must be configured, at build time, for proper operation:
+
+* NODE_ENV
+  * "development" or "production"
+* API_URL
+  * The URL to the server/web API, i.e. http://localhost:10001. This is only needed by the reverse
+  proxy - front-end does not know about this URL.
+
+For development, all environment variables have already been set in the docker compose file and can
+be tweaked as needed. Some other environment variables, not listed above, are required for development and
+have also been set in the docker-compose file.
+
+## Notes
+
+* TODO: Secure the login and register page
+  * Ensure CSRF is handled properly.
+  * Add device registration to register page (this will solve user prescence issue)
+* TODO: Finalize Production Deployment
+  * Configure proxy with nginx.
+  * Setup Bicep template
+  * Setup DevOps build pipeline
+  * Setup custom domain?
