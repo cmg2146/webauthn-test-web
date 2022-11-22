@@ -31,3 +31,5 @@ RUN ["npm", "run", "generate"]
 
 FROM nginx
 COPY --from=generate /app/dist /usr/share/nginx/html
+# default config was modified for the api reverse proxy
+COPY ./default.conf.template /etc/nginx/templates/default.conf.template
