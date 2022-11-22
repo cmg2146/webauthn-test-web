@@ -53,7 +53,4 @@ have also been set in the docker-compose file.
   * Ensure CSRF is handled properly.
   * Add device registration to register page (this will solve user prescence issue)
 * TODO: Finalize Production Deployment
-  * Configure proxy with nginx.
-  * Setup Bicep template
-  * Setup DevOps build pipeline
   * Setup custom domain?
