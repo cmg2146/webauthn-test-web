@@ -16,9 +16,11 @@ variables:
   tag: $(Build.BuildNumber)
 
 stages:
-- stage: Build Web
+- stage: Deploy_Web
+  displayName: Build and Deploy Web
   jobs:
-  - job: Build Web
+  - job: Deploy_Web
+    displayName: Build and Deploy Web
     steps:
     - task: Docker@2
       displayName: Build Docker Image
