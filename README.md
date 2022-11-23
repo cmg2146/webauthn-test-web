@@ -54,5 +54,3 @@ have also been set in the docker-compose file.
 * TODO: Secure the login and register page
   * Ensure CSRF is handled properly.
   * Add device registration to register page (this will solve user prescence issue)
-* TODO: Finalize Production Deployment
-  * Setup custom domain?

@@ -1,5 +1,5 @@
 {
-  "name": "webauthn-test-ui",
+  "name": "webauthn-test-web",
   "version": "1.0.0",
   "private": true,
   "scripts": {
