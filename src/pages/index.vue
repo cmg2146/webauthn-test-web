@@ -18,9 +18,14 @@
           size="75"
           class="mr-5 text-h5"
         >{{user.firstName.substring(0, 1)}}{{user.lastName.substring(0, 1)}}</v-avatar>
-        <span class="font-weight-bold text-h5">
-          {{user.firstName}} {{user.lastName}}
-        </span>
+        <div>
+          <div class="font-weight-bold text-h5">
+            {{user.firstName}} {{user.lastName}}
+          </div>
+          <div class="text-h6">
+            {{user.displayName}}
+          </div>
+        </div>
 
         <v-spacer></v-spacer>
 
