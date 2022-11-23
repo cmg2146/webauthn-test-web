@@ -20,9 +20,6 @@ FROM node:16-alpine as generate
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
 
-ARG API_URL
-ENV API_URL=$API_URL
-
 WORKDIR /app
 COPY --from=install-deps /app ./
 

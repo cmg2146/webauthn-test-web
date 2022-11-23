@@ -39,6 +39,8 @@ The following environment variables must be configured, at build time, for prope
 
 * NODE_ENV
   * "development" or "production"
+
+The following environment variables must be configured, at run time, for proper operation
 * API_URL
   * The URL to the server/web API, i.e. http://localhost:10001. This is only needed by the reverse
   proxy - front-end does not know about this URL.
