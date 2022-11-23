@@ -35,7 +35,7 @@ stages:
       displayName: Push Docker Image
       inputs:
         command: push
-        containerRegistry: dockerRegistryServiceConnection
+        containerRegistry: $(dockerRegistryServiceConnection)
         repository: $(imageRepository)
         tags: |
           $(tag)
