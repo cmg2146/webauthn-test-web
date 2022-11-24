@@ -9,6 +9,14 @@ services:
     command: ["npm", "run", "dev"]
     ports:
       - 10000:3000
+    volumes:
+      - ./src:/app/src
+      - ./config/.eslintrc.js:/app/.eslintrc.js
+      - ./config/jsconfig.json:/app/jsconfig.json
+      - ./config/nuxt.config.js:/app/nuxt.config.js
+      # bind mount the certs to avoid any chance of them ending up in built image
+      - ./dev-server.key:/app/dev-server.key
+      - ./dev-server.pem:/app/dev-server.pem
     environment:
       NODE_ENV: development
       API_URL: http://host.docker.internal:10001

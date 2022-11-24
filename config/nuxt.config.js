@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import colors from 'vuetify/es5/util/colors';
 
-export default {
+var config = {
   srcDir: 'src/',
   
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -111,20 +111,25 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {  
-  },
+  }
+};
 
+if (process.env.NODE_ENV === 'development') {
   //server only used for development because target = static
-  server: {
+  config.server = {
     https: {
       key: fs.readFileSync(path.resolve(__dirname, 'dev-server.key')),
       cert: fs.readFileSync(path.resolve(__dirname, 'dev-server.pem'))
     }
-  },
-  proxy: {  
-    //in development, we want to proxy all api requests to the ASP.NET Core app
+  };
+
+  //in development, we want to proxy all api requests to the ASP.NET Core app
+  config.proxy = {     
     '/api': {
       changeOrigin: false,
       target: process.env.API_URL
     }
-  }
+  };
 }
+
+export default config;
