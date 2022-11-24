@@ -128,6 +128,7 @@
         text
         block
         :loading="registering"
+        :disabled="registering"
         @click="onAddDevice"
       >
         <v-icon>mdi-plus</v-icon>

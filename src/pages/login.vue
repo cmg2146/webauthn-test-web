@@ -34,6 +34,7 @@
                 block
                 color="primary"
                 :loading="authenticating"
+                :disabled="authenticating"
                 type="submit"
               >Login</v-btn>
             </v-card-text>

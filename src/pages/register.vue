@@ -58,6 +58,7 @@
                 block
                 color="primary"
                 :loading="registering"
+                :disabled="registering"
                 type="submit"
               >Register</v-btn>
             </v-card-text>            
