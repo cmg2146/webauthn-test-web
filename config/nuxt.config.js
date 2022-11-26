@@ -125,9 +125,12 @@ if (process.env.NODE_ENV === 'development') {
 
   //in development, we want to proxy all api requests to the ASP.NET Core app
   config.proxy = {     
-    '/api': {
+    '/api/': {
       changeOrigin: false,
-      target: process.env.API_URL
+      target: process.env.API_URL,
+      pathRewrite: {
+        '^/api/': ''
+      }
     }
   };
 }

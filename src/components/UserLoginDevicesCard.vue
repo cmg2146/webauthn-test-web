@@ -193,7 +193,7 @@ export default {
     loadActiveCredential() {
       return this
         .$axios
-        .$get('/api/webauthn/active-credential')
+        .$get('/api/users/me/credentials/current')
         .then((credential) => {
           this.activeCredentialId = credential.id;
         })
