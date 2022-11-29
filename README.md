@@ -56,3 +56,28 @@ have also been set in the docker-compose file.
 * TODO: Secure the login and register page
   * Ensure CSRF is handled properly.
   * Add device registration to register page (this will solve user prescence issue)
+
+## Managing Authenticator Credentials
+
+For Yubikeys, first download the [Yubikey Manager](https://docs.yubico.com/software/yubikey/tools/ykman/intro.html).
+In an administrator command prompt, run the following to list all FIDO credentials stored on the key:
+
+```ykman fido credentials list```
+
+To delete a credential, run:
+
+```ykman fido credentials delete nameOfCredential```
+
+For Windows Hello authenticator, you can use the certutil utility.
+In an administrator command prompt, run the following command to list all providers:
+
+ `certutil -csplist`
+
+ For each provider run the following command until you see FIDO keys listed.
+FIDO keys should look like `sid/guid/FIDO_AUTHENTICATOR//rpIdHash_userId`:
+
+```certutil -csp "The Provider Name" -key```
+
+To delete a key, run:
+
+```certutil -csp "The Provider Name" -delkey nameOfKey```
