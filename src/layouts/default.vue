@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <v-main>
-      <Nuxt />
+      <v-container class="px-10 pt-10">
+        <AppHeader />
+        <Nuxt />
+      </v-container>
     </v-main>
   </v-app>
 </template>

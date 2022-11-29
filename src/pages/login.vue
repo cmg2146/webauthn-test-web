@@ -1,16 +1,5 @@
 <template>
-  <v-container class="px-10 pt-10">
-    <v-row justify="center" align="start" class="mb-5">
-      <v-col cols="12" class="d-flex justify-center">
-        <v-img
-          :src="require('~/static/logo.svg')"
-          alt="WebAuthn Logo"
-          height="75"
-          width="75"
-          contain
-        ></v-img>       
-      </v-col>
-    </v-row>
+  <div>
     <v-row justify="center" align="start">
       <v-col cols="12" class="d-flex justify-center">
         <h2>
@@ -20,12 +9,8 @@
     </v-row>
     <v-row justify="center" align="start">
       <v-col cols="12" class="d-flex justify-center">
-        <v-card
-          class="login-card pa-5"
-        >
-          <v-form
-            @submit.prevent="onLoginSubmit"
-          >
+        <v-card class="login-card pa-5">
+          <v-form @submit.prevent="onLoginSubmit">
             <v-card-text>
               Click below to login with your computer, phone, or security key.
             </v-card-text>
@@ -40,10 +25,9 @@
             </v-card-text>
           </v-form>
           <v-card-text>
-            <span>Or </span>
             <NuxtLink
               to="/register"
-            >create an account</NuxtLink>
+            >Create an account</NuxtLink>
           </v-card-text>          
         </v-card>
       </v-col>
@@ -59,7 +43,7 @@
         </v-alert>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>

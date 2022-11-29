@@ -6,122 +6,84 @@
       Login Devices
     </v-card-title>
 
-    <v-divider class="mb-5"></v-divider>
+    <v-divider></v-divider>
 
-    <template v-if="errorLoadingCredentials">
-      <div class="text-center py-10">
-        There was an error loading your device list
-      </div>
-    </template>
+    <v-card-text
+      v-if="errorLoadingCredentials"
+      class="text-center py-10"
+    >
+      There was an error loading your device list
+    </v-card-text>
 
-    <template v-else-if="!credentials.length">
-      <div class="text-center py-10">
-        You don't have any devices to log in with.
-        Click below to add a device.
-      </div>
-    </template>
+    <v-card-text
+      v-else-if="!loadingCredentials && !credentials.length"
+      class="text-center py-10"
+    >
+      You don't have any devices to log in with.
+      Click below to add a device.
+    </v-card-text>
 
-    <template v-else>
-      <v-card-text
+    <v-card-text
+      v-else
+      class="pa-0"
+    >
+      <v-fade-transition>
+        <v-overlay
+          absolute
+          :value="loadingCredentials"
+        >
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+        </v-overlay>
+      </v-fade-transition>
+
+      <div
         v-for="credential in credentials"
         :key="credential.id"
-        class="px-10 py-5"
       >
-        <v-list-item two-line>
-          <v-list-item-icon>
-            <v-icon>{{ getIconNameForCredential(credential) }}</v-icon>
-          </v-list-item-icon>
+        <UserLoginDeviceItem
+          :credential="credential"
+          :isActive="credential.id === activeCredentialId"
+          @delete="confirmingDeleteCredential = true"
+          class="px-10 py-5"
+        >
+        </UserLoginDeviceItem>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ credential.displayName }}</v-list-item-title>
-            <v-list-item-subtitle
-              v-if="activeCredentialId === credential.id"
-              class="mt-2"
-            >
-              <v-chip color="primary" small>
-                Logged in
-              </v-chip>
-            </v-list-item-subtitle>
-          </v-list-item-content>
+        <v-dialog
+          v-model="confirmingDeleteCredential"
+          max-width="350"
+        >
+          <v-card>
+            <v-card-title class="text-h5">
+              Confirm Deletion
+            </v-card-title>
+            <v-card-text>
+              Are you sure you want to delete this device?
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                text
+                @click="confirmingDeleteCredential = false"
+              >
+                No
+              </v-btn>                      
+              <v-btn
+                color="primary"
+                text
+                @click="onDeleteCredential(credential)"
+              >
+                Yes
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+    </v-card-text>
 
-          <v-list-item-action>
-            <v-menu
-              bottom
-              left
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
-              </template>
-
-              <v-list>
-                <v-dialog
-                  v-model="confirmingDeleteCredential"
-                  max-width="350"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-list-item
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-list-item-icon color="error">
-                        <v-icon>mdi-delete</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-title>
-                        Delete
-                      </v-list-item-title>
-                    </v-list-item>
-                  </template>
-                  <v-card>
-                    <v-card-title class="text-h5">
-                      Confirm Deletion
-                    </v-card-title>
-                    <v-card-text>
-                      Are you sure you want to delete this device?
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        text
-                        @click="confirmingDeleteCredential = false"
-                      >
-                        No
-                      </v-btn>                      
-                      <v-btn
-                        color="primary"
-                        text
-                        @click="onDeleteCredential(credential)"
-                      >
-                        Yes
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-list>
-            </v-menu>
-          </v-list-item-action>          
-        </v-list-item>
-
-        <v-fade-transition>
-          <v-overlay
-            absolute
-            :value="loadingCredentials"
-          >
-            <v-progress-circular
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
-          </v-overlay>
-        </v-fade-transition>
-      </v-card-text>
-    </template>
-
-    <v-divider class="mt-5"></v-divider>
+    <v-divider></v-divider>
 
     <v-card-actions class="d-flex justify-center px-10 py-5">
       <v-btn
@@ -245,20 +207,6 @@ export default {
           this.errorDeletingCredential = true;
           this.credentialDeletionErrorMessage = error;
         });
-    },
-    getIconNameForCredential(credential) {
-      var attFmt = credential.attestationFormatId;
-
-      if (attFmt === 'tpm') {
-        return 'mdi-laptop';
-      } else if (attFmt === 'android-key'
-        || attFmt === 'android-safetynet'
-        || attFmt === 'apple'
-      ) {
-        return 'mdi-cellphone';
-      }
-
-      return 'mdi-usb-flash-drive';
     }
   },
   async mounted() {

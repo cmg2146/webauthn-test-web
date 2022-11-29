@@ -1,16 +1,5 @@
 <template>
-  <v-container class="px-10 pt-10">
-    <v-row justify="center" align="start" class="mb-5">
-      <v-col cols="12" class="d-flex justify-center">
-        <v-img
-          :src="require('~/static/logo.svg')"
-          alt="WebAuthn Logo"
-          height="75"
-          width="75"
-          contain
-        ></v-img>       
-      </v-col>
-    </v-row>
+  <div>
     <v-row justify="center" align="start">
       <v-col cols="12" class="d-flex justify-center">
         <h2>
@@ -77,7 +66,7 @@
         </v-alert>
       </v-col>
     </v-row>    
-  </v-container>
+  </div>
 </template>
 
 <script>
