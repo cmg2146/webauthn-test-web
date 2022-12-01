@@ -3,18 +3,21 @@ server {
     listen  [::]:80;
     server_name  localhost;
 
+    add_header Strict-Transport-Security 'max-age=15552000; includeSubDomains';
+
     #access_log  /var/log/nginx/host.access.log  main;
 
     location /api/ {
         proxy_pass          ${API_URL}/;
         proxy_set_header    Host $proxy_host;
     }
-    
+
     location / {
         root   /usr/share/nginx/html;
         index  index.html index.htm;
+        gzip_static on;
     }
-
+    
     #error_page  404              /404.html;
 
     # redirect server error pages to the static page /50x.html
