@@ -51,11 +51,8 @@ have also been set in the docker-compose file.
 
 ## Notes
 
-* TODO: Run audit in chrome dev tools
 * TODO: Enable Content-Security Policy
-* TODO: Secure the login and register page
-  * Ensure CSRF is handled properly.
-  * Add device registration to register page (this will solve user prescence issue)
+* TODO: Add device registration to register page (this will solve user prescence issue)
 
 ## Managing Authenticator Credentials
 
