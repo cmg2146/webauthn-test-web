@@ -3,7 +3,9 @@ server {
     listen  [::]:80;
     server_name  localhost;
 
-    add_header Strict-Transport-Security 'max-age=15552000; includeSubDomains';
+    add_header Strict-Transport-Security    'max-age=15552000; includeSubDomains';
+    add_header Referrer-Policy              'no-referrer';
+    add_header X-Content-Type-Options       'nosniff';
 
     #access_log  /var/log/nginx/host.access.log  main;
 
