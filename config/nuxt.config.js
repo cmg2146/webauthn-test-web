@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import colors from 'vuetify/es5/util/colors';
 
-var config = {
+const config = {
   srcDir: 'src/',
-  
+
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -63,9 +63,9 @@ var config = {
   auth: {
     strategies: {
       cookie: {
-        //note: cookie name cannot be configured or else auth will not work with http only cookies.
-        //Obviously http only cookies are a fundamental requirement. In order for http only to work,
-        //autoFetch must be true or the user must be set manually.
+        // note: cookie name cannot be configured or else auth will not work with http only cookies.
+        // Obviously http only cookies are a fundamental requirement. In order for http only to work,
+        // autoFetch must be true or the user must be set manually.
         user: {
           property: false,
           autoFetch: true
@@ -75,7 +75,7 @@ var config = {
           logout: { url: '/api/webauthn/logout', method: 'post' },
           user: { url: '/api/users/me', method: 'get' }
         }
-      },
+      }
     },
     watchLoggedIn: true,
     redirect: {
@@ -111,12 +111,11 @@ var config = {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {  
-  }
+  build: {}
 };
 
 if (process.env.NODE_ENV === 'development') {
-  //server only used for development because target = static
+  // server only used for development because target = static
   config.server = {
     https: {
       key: fs.readFileSync(path.resolve(__dirname, 'dev-server.key')),
@@ -124,8 +123,8 @@ if (process.env.NODE_ENV === 'development') {
     }
   };
 
-  //in development, we want to proxy all api requests to the ASP.NET Core app
-  config.proxy = {     
+  // in development, we want to proxy all api requests to the ASP.NET Core app
+  config.proxy = {
     '/api/': {
       changeOrigin: false,
       target: process.env.API_URL,

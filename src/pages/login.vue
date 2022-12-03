@@ -2,9 +2,7 @@
   <div>
     <v-row justify="center" align="start">
       <v-col cols="12" class="d-flex justify-center">
-        <h2>
-          Login to WebAuthn-Test
-        </h2>        
+        <h2>Login to WebAuthn-Test</h2>
       </v-col>
     </v-row>
     <v-row justify="center" align="start">
@@ -21,14 +19,18 @@
                 :loading="authenticating"
                 :disabled="authenticating"
                 type="submit"
-              >Login</v-btn>
+              >
+                Login
+              </v-btn>
             </v-card-text>
           </v-form>
           <v-card-text>
             <NuxtLink
               to="/register"
-            >Create an account</NuxtLink>
-          </v-card-text>          
+            >
+              Create an account
+            </NuxtLink>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -39,7 +41,7 @@
           color="error"
           class="login-card pa-5"
         >
-          {{authenticationErrorMessage}}  
+          {{ authenticationErrorMessage }}
         </v-alert>
       </v-col>
     </v-row>
@@ -56,23 +58,23 @@ export default {
     return {
       authenticating: false,
       authenticationError: false,
-      authenticationErrorMessage: '',
+      authenticationErrorMessage: ''
     };
   },
   methods: {
-    onLoginSubmit() {
+    onLoginSubmit () {
       this.authenticating = true;
       this.authenticationError = false;
       this.authenticationErrorMessage = '';
 
       return this
         .$axios
-        //retrieve authentication options/challenge first
+        // retrieve authentication options/challenge first
         .$get('/api/webauthn/authenticate')
-        //then start auth ceremony
-        .then((authOptions) => startAuthentication(authOptions))
-        //then try to log the user in with the authenticator response
-        .then((assertionResponse) => this.$auth.loginWith('cookie', { data: assertionResponse }))
+        // then start auth ceremony
+        .then(authOptions => startAuthentication(authOptions))
+        // then try to log the user in with the authenticator response
+        .then(assertionResponse => this.$auth.loginWith('cookie', { data: assertionResponse }))
         .catch((error) => {
           this.authenticating = false;
           this.authenticationError = true;

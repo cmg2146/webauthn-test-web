@@ -2,9 +2,7 @@
   <div>
     <v-row justify="center" align="start">
       <v-col cols="12" class="d-flex justify-center">
-        <h2>
-          Create an account for WebAuthn-Test
-        </h2>        
+        <h2>Create an account for WebAuthn-Test</h2>
       </v-col>
     </v-row>
     <v-row justify="center" align="start">
@@ -23,24 +21,24 @@
                 name="displayName"
                 label="Username/Account Name"
                 counter="255"
-                class="mb-3"      
-              ></v-text-field>
+                class="mb-3"
+              />
               <v-text-field
                 v-model="firstName"
                 :rules="[nameRules.required, nameRules.max]"
                 name="displayName"
                 label="First Name"
                 counter="255"
-                class="mb-3"      
-              ></v-text-field>
+                class="mb-3"
+              />
               <v-text-field
                 v-model="lastName"
                 :rules="[nameRules.required, nameRules.max]"
                 name="displayName"
                 label="Last Name"
                 counter="255"
-                class="mb-3"      
-              ></v-text-field>
+                class="mb-3"
+              />
             </v-card-text>
             <v-card-text>
               <v-btn
@@ -49,9 +47,11 @@
                 :loading="registering"
                 :disabled="registering"
                 type="submit"
-              >Register</v-btn>
-            </v-card-text>            
-          </v-form>       
+              >
+                Register
+              </v-btn>
+            </v-card-text>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>
@@ -62,10 +62,10 @@
           color="error"
           class="pa-5"
         >
-          {{registrataionErrorMessage}}  
+          {{ registrataionErrorMessage }}
         </v-alert>
       </v-col>
-    </v-row>    
+    </v-row>
   </div>
 </template>
 
@@ -88,13 +88,12 @@ export default {
     };
   },
   methods: {
-    onSubmitRegistration() {
-      if (this.$refs.registerForm.validate())
-      {
+    onSubmitRegistration () {
+      if (this.$refs.registerForm.validate()) {
         this.registering = true;
         this.registrationError = false;
 
-        var user = {
+        const user = {
           displayName: this.displayName,
           firstName: this.firstName,
           lastName: this.lastName

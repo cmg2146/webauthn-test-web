@@ -6,17 +6,19 @@
           color="primary"
           size="75"
           class="mr-5 text-h5"
-        >{{user.firstName.substring(0, 1)}}{{user.lastName.substring(0, 1)}}</v-avatar>
+        >
+          {{ userInitials }}
+        </v-avatar>
         <div>
           <div class="font-weight-bold text-h5">
-            {{user.firstName}} {{user.lastName}}
+            {{ user.firstName }} {{ user.lastName }}
           </div>
           <div class="text-h6">
-            {{user.displayName}}
+            {{ user.displayName }}
           </div>
         </div>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
 
         <v-btn
           text
@@ -26,9 +28,9 @@
           Logout
         </v-btn>
       </v-col>
-    </v-row>    
+    </v-row>
     <v-row justify="center" align="start">
-      <v-col cols="12" md="7"  class="d-flex flex-column align-stretch">
+      <v-col cols="12" md="7" class="d-flex flex-column align-stretch">
         <UserLoginDevicesCard />
       </v-col>
     </v-row>
@@ -38,7 +40,7 @@
 <script>
 export default {
   name: 'IndexPage',
-  data() {
+  data () {
     return {
       user: {
         firstName: this.$auth.user.firstName,
@@ -47,8 +49,13 @@ export default {
       }
     };
   },
+  compute: {
+    userInitials () {
+      return this.user.firstName.charAt(0) + this.user.lastName.charAt(0);
+    }
+  },
   methods: {
-    onLogoutClick() {
+    onLogoutClick () {
       this.$auth.logout();
     }
   }

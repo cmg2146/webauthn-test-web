@@ -7,7 +7,7 @@
         height="75"
         width="75"
         contain
-      ></v-img>
+      />
     </v-col>
   </v-row>
 </template>

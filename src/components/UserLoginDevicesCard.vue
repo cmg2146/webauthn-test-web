@@ -6,7 +6,7 @@
       Login Devices
     </v-card-title>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-card-text
       v-if="errorLoadingCredentials"
@@ -35,7 +35,7 @@
           <v-progress-circular
             indeterminate
             color="primary"
-          ></v-progress-circular>
+          />
         </v-overlay>
       </v-fade-transition>
 
@@ -45,11 +45,10 @@
       >
         <UserLoginDeviceItem
           :credential="credential"
-          :isActive="credential.id === activeCredentialId"
-          @delete="confirmingDeleteCredential = true"
+          :is-active="credential.id === activeCredentialId"
           class="px-10 py-5"
-        >
-        </UserLoginDeviceItem>
+          @delete="confirmingDeleteCredential = true"
+        />
 
         <v-dialog
           v-model="confirmingDeleteCredential"
@@ -63,13 +62,13 @@
               Are you sure you want to delete this device?
             </v-card-text>
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
               <v-btn
                 text
                 @click="confirmingDeleteCredential = false"
               >
                 No
-              </v-btn>                      
+              </v-btn>
               <v-btn
                 color="primary"
                 text
@@ -83,7 +82,7 @@
       </div>
     </v-card-text>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-card-actions class="d-flex justify-center px-10 py-5">
       <v-btn
@@ -95,7 +94,7 @@
       >
         <v-icon>mdi-plus</v-icon>
         Add device
-      </v-btn>     
+      </v-btn>
     </v-card-actions>
 
     <v-snackbar
@@ -103,7 +102,7 @@
       color="error"
       bottom
     >
-      Error adding device: {{registrationErrorMessage}}
+      Error adding device: {{ registrationErrorMessage }}
     </v-snackbar>
 
     <v-snackbar
@@ -111,8 +110,8 @@
       color="error"
       bottom
     >
-      Error deleting device: {{credentialDeletionErrorMessage}}
-    </v-snackbar>         
+      Error deleting device: {{ credentialDeletionErrorMessage }}
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -120,8 +119,8 @@
 import { startRegistration } from '@simplewebauthn/browser';
 
 export default {
-  name: "UserLoginDevicesCard",
-  data() {
+  name: 'UserLoginDevicesCard',
+  data () {
     return {
       registering: false,
       registrationError: false,
@@ -135,8 +134,12 @@ export default {
       confirmingDeleteCredential: false
     };
   },
+  mounted () {
+    this.loadCredentials();
+    this.loadActiveCredential();
+  },
   methods: {
-    loadCredentials() {
+    loadCredentials () {
       this.loadingCredentials = true;
       this.errorLoadingCredentials = false;
 
@@ -147,12 +150,12 @@ export default {
           this.credentials = credentials;
           this.loadingCredentials = false;
         })
-        .catch((error) => {
+        .catch(() => {
           this.loadingCredentials = false;
           this.errorLoadingCredentials = true;
         });
     },
-    loadActiveCredential() {
+    loadActiveCredential () {
       return this
         .$axios
         .$get('/api/users/me/credentials/current')
@@ -161,28 +164,28 @@ export default {
         })
         .catch(() => {});
     },
-    onAddDevice() {
+    onAddDevice () {
       this.registering = true;
       this.registrationError = false;
       this.registrationErrorMessage = '';
 
       return this
         .$axios
-        //retrieve registration options/challenge first
+        // retrieve registration options/challenge first
         .$get('/api/webauthn/register')
-        //then start attestation ceremony
-        .then((createOptions) => startRegistration(createOptions))
-        //then try to register credential from the authenticator response
+        // then start attestation ceremony
+        .then(createOptions => startRegistration(createOptions))
+        // then try to register credential from the authenticator response
         .then((attestationResponse) => {
           return this
             .$axios
             .$post('/api/webauthn/register', attestationResponse);
         })
-        //then update the device list if successful registration
+        // then update the device list if successful registration
         .then((createResult) => {
           this.registering = false;
           this.loadCredentials();
-          return true;    
+          return true;
         })
         .catch((error) => {
           this.registering = false;
@@ -190,7 +193,7 @@ export default {
           this.registrationErrorMessage = error;
         });
     },
-    onDeleteCredential(credential) {
+    onDeleteCredential (credential) {
       this.loadingCredentials = true;
       this.errorDeletingCredential = false;
       this.confirmingDeleteCredential = false;
@@ -208,10 +211,6 @@ export default {
           this.credentialDeletionErrorMessage = error;
         });
     }
-  },
-  async mounted() {
-    this.loadCredentials();
-    this.loadActiveCredential();
   }
 };
 </script>

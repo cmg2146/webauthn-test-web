@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  web: 
+  web:
     build:
       context: .
       target: install-deps
@@ -11,7 +11,6 @@ services:
       - 10000:3000
     volumes:
       - ./src:/app/src
-      - ./config/.eslintrc.js:/app/.eslintrc.js
       - ./config/jsconfig.json:/app/jsconfig.json
       - ./config/nuxt.config.js:/app/nuxt.config.js
       # bind mount the certs to avoid any chance of them ending up in built image
