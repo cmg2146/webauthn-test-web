@@ -3,9 +3,11 @@ server {
     listen  [::]:80;
     server_name  localhost;
 
-    add_header Strict-Transport-Security    'max-age=15552000; includeSubDomains';
-    add_header Referrer-Policy              'no-referrer';
-    add_header X-Content-Type-Options       'nosniff';
+    add_header Strict-Transport-Security  'max-age=15552000; includeSubDomains';
+    add_header Referrer-Policy            'no-referrer';
+    add_header X-Content-Type-Options     'nosniff';
+    add_header Content-Security-Policy    "frame-ancestors 'none'; frame-src 'none'";
+    add_header X-Frame-Options            'DENY';
 
     #access_log  /var/log/nginx/host.access.log  main;
 
@@ -19,7 +21,7 @@ server {
         index  index.html index.htm;
         gzip_static on;
     }
-    
+
     #error_page  404              /404.html;
 
     # redirect server error pages to the static page /50x.html
@@ -52,4 +54,3 @@ server {
     #    deny  all;
     #}
 }
-
