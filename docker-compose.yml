@@ -6,18 +6,19 @@ services:
     build:
       context: .
       target: install-deps
+      args:
+        - NODE_ENV=development
     command: ["npm", "run", "dev"]
     ports:
       - 10000:3000
     volumes:
       - ./src:/app/src
-      - ./config/jsconfig.json:/app/jsconfig.json
-      - ./config/nuxt.config.js:/app/nuxt.config.js
+      - ./.eslintrc.js:/app/.eslintrc.js
+      - ./nuxt.config.js:/app/nuxt.config.js
       # bind mount the certs to avoid any chance of them ending up in built image
       - ./dev-server.key:/app/dev-server.key
       - ./dev-server.pem:/app/dev-server.pem
     environment:
-      NODE_ENV: development
       API_URL: http://host.docker.internal:10001
       #https://nuxtjs.org/docs/features/configuration/#edit-host-and-port
       PORT: 3000

@@ -56,6 +56,13 @@ const config = {
     '@nuxtjs/auth-next'
   ],
 
+  eslint: {
+    // the file watching doesnt work with docker so lint all files
+    lintDirtyModulesOnly: false,
+    failOnError: true,
+    failOnWarning: true
+  },
+
   router: {
     middleware: ['auth']
   },
