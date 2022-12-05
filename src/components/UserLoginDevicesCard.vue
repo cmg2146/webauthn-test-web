@@ -39,47 +39,14 @@
         </v-overlay>
       </v-fade-transition>
 
-      <div
+      <UserLoginDeviceItem
         v-for="credential in credentials"
         :key="credential.id"
-      >
-        <UserLoginDeviceItem
-          :credential="credential"
-          :is-active="credential.id === activeCredentialId"
-          class="px-10 py-5"
-          @delete="confirmingDeleteCredential = true"
-        />
-
-        <v-dialog
-          v-model="confirmingDeleteCredential"
-          max-width="350"
-        >
-          <v-card>
-            <v-card-title class="text-h5">
-              Confirm Deletion
-            </v-card-title>
-            <v-card-text>
-              Are you sure you want to delete this device?
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                text
-                @click="confirmingDeleteCredential = false"
-              >
-                No
-              </v-btn>
-              <v-btn
-                color="primary"
-                text
-                @click="onDeleteCredential(credential)"
-              >
-                Yes
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
+        :credential="credential"
+        :is-active="credential.id === activeCredentialId"
+        class="px-10 py-5"
+        @delete="(cred) => confirmDeleteCredential(cred)"
+      />
     </v-card-text>
 
     <v-divider />
@@ -96,6 +63,36 @@
         Add device
       </v-btn>
     </v-card-actions>
+
+    <v-dialog
+      v-model="confirmingDeleteCredential"
+      max-width="350"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          Confirm Deletion
+        </v-card-title>
+        <v-card-text>
+          Are you sure you want to delete this device?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            text
+            @click="confirmingDeleteCredential = false"
+          >
+            No
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="onDeleteCredential"
+          >
+            Yes
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-snackbar
       :value="registrationError"
@@ -131,7 +128,8 @@ export default {
       credentialDeletionErrorMessage: '',
       credentials: [],
       activeCredentialId: null,
-      confirmingDeleteCredential: false
+      confirmingDeleteCredential: false,
+      credentialToDelete: null
     };
   },
   mounted () {
@@ -193,14 +191,18 @@ export default {
           this.registrationErrorMessage = error;
         });
     },
-    onDeleteCredential (credential) {
+    confirmDeleteCredential (credential) {
+      this.confirmingDeleteCredential = true;
+      this.credentialToDelete = credential;
+    },
+    onDeleteCredential () {
       this.loadingCredentials = true;
       this.errorDeletingCredential = false;
       this.confirmingDeleteCredential = false;
 
       return this
         .$axios
-        .$delete(`/api/users/me/credentials/${credential.id}`)
+        .$delete(`/api/users/me/credentials/${this.credentialToDelete.id}`)
         .then(() => {
           this.loadCredentials();
           return true;

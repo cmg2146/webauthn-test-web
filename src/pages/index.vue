@@ -5,9 +5,9 @@
         <v-avatar
           color="primary"
           size="75"
-          class="mr-5 text-h5"
+          class="mr-5"
         >
-          {{ userInitials }}
+          <span class="white--text text-h5">{{ userInitials }}</span>
         </v-avatar>
         <div>
           <div class="font-weight-bold text-h5">
@@ -49,7 +49,7 @@ export default {
       }
     };
   },
-  compute: {
+  computed: {
     userInitials () {
       return this.user.firstName.charAt(0) + this.user.lastName.charAt(0);
     }
