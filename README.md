@@ -51,7 +51,7 @@ have also been set in the docker-compose file.
 
 ## Notes
 
-* TODO: Enable Content-Security Policy
+* TODO: Setup Application Insights and Logging
 * TODO: Add device registration to register page (this will solve user prescence issue)
 
 ## Managing Authenticator Credentials
