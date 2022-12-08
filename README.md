@@ -1,6 +1,6 @@
 # WebAuthn Test UI
-This repo contains the front end for the WebAuthn-Test application. The Webauthn-Test
-application is simply a basic sample of passwordless and usernameless authentication with WebAuthn.
+This repo contains the front end for the WebAuthn-Test application. The complete application
+is nothing more than a basic example of passwordless and usernameless authentication with WebAuthn.
 
 ## Application Structure
 The complete application contains two parts:
@@ -10,15 +10,15 @@ The complete application contains two parts:
 
 The front end is implemented as a static web site using Vue.js and Nuxt.
 
-In production and in development, the web API and front end are hosted separately, but requests to the API are
-proxied by the front end server, thus eliminating cross-origin issues and allowing cookies to be used for authentication.
+In production and development, the web API and front end are hosted separately, but requests to the API are
+proxied by the front end server. This design allows Strict cookies to be used for authentication.
 In production, nginx is used to serve the front end and proxy requests to the web API.
 
-The API is available in the webauthn-test-api repo.
+The API is available in the `webauthn-test-api` repo.
 
 The Frontend Vue app was created with the following npm command:
 
-```npm init nuxt-app@latest ./src/ui```
+```npm init nuxt-app@latest webauthn-test-web```
 
 ## Build
 Make sure the API project is cloned first before continuing. Then, to run the complete solution, start the API before
@@ -40,19 +40,14 @@ The following environment variables must be configured, at build time, for prope
 * NODE_ENV
   * "development" or "production"
 
-The following environment variables must be configured, at run time, for proper operation
+The following environment variables must be configured, at run time, for proper operation:
 * API_URL
-  * The URL to the server/web API, i.e. http://localhost:10001. This is only needed by the reverse
-  proxy - front-end does not know about this URL.
+  * The URL to the API, i.e. http://localhost:10001. This is only needed by the reverse
+  proxy.
 
 For development, all environment variables have already been set in the docker compose file and can
 be tweaked as needed. Some other environment variables, not listed above, are required for development and
 have also been set in the docker-compose file.
-
-## Notes
-
-* TODO: Setup Application Insights and Logging
-* TODO: Add device registration to register page (this will solve user prescence issue)
 
 ## Managing Authenticator Credentials
 
@@ -78,3 +73,8 @@ FIDO keys should look like `sid/guid/FIDO_AUTHENTICATOR//rpIdHash_userId`:
 To delete a key, run:
 
 ```certutil -csp "The Provider Name" -delkey nameOfKey```
+
+## Notes
+
+* TODO: Setup Application Insights and Logging
+* TODO: Add device registration to register page (this will solve user prescence issue)
