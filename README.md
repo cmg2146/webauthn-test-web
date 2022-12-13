@@ -8,31 +8,31 @@ The complete application contains two parts:
 1. Web API
 2. Frontend
 
-The front end is implemented as a static web site using Vue.js and Nuxt.
+The frontend is implemented as a static web site using Vue.js and Nuxt.
 
-In production and development, the web API and front end are hosted separately, but requests to the API are
-proxied by the front end server. This design allows Strict cookies to be used for authentication.
-In production, nginx is used to serve the front end and proxy requests to the web API.
+In production and development, the web API and frontend are hosted separately, but requests to the API are
+proxied by the frontend server. This design allows Strict cookies to be used for authentication.
+In production, Nginx is used to serve the frontend and proxy requests to the API.
 
 The API is available in the `webauthn-test-api` repo.
 
-The Frontend Vue app was created with the following npm command:
+The frontend Vue app was created with the following npm command:
 
 ```npm init nuxt-app@latest webauthn-test-web```
 
 ## Build
-Make sure the API project is cloned first before continuing. Then, to run the complete solution, start the API before
-the frontend. Consult the API repo Readme to learn how to run the API.
+For development, make sure the API project is cloned first before continuing. Then, to run the complete solution, start the API before
+the frontend. Consult the API repo Readme to learn how to start the API.
 
-Once the API is running, the front end can be run using Docker Linux containers by executing the following command at the repo root:
+Once the API is running, the frontend can be run using Docker Linux containers by executing the following command at the repo root:
 
 ```docker-compose up```
 
 ...and then opening your browser to https://localhost:10000.
 
-If your browser warns you the site is unsafe, you can either "proceed as unsafe" or add the development certificate to
-your certificate store to avoid the warning again. This development certificate must not be used in production!
-It was created using the `dotnet dev-certs https` CLI command.
+If your browser warns the site is unsafe, either "proceed as unsafe" or trust the development certificate on your machine to avoid the
+warning again. The development certificate was created using the `dotnet dev-certs https` CLI command and must not be used in
+production!
 
 ### Configuration
 The following environment variables must be configured, at build time, for proper operation:
@@ -60,12 +60,12 @@ To delete a credential, run:
 
 ```ykman fido credentials delete nameOfCredential```
 
-For Windows Hello authenticator, you can use the certutil utility.
+For Windows Hello authenticator, use the certutil utility.
 In an administrator command prompt, run the following command to list all providers:
 
  `certutil -csplist`
 
- For each provider run the following command until you see FIDO keys listed.
+For each provider, run the following command until FIDO keys are listed.
 FIDO keys should look like `sid/guid/FIDO_AUTHENTICATOR//rpIdHash_userId`:
 
 ```certutil -csp "The Provider Name" -key```
