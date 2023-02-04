@@ -1,30 +1,27 @@
-# WebAuthn Test UI
-This repo contains the front end for the WebAuthn-Test application. The complete application
+# WebAuthn Test Web
+This repo contains the frontend for the WebAuthn-Test application. The complete application
 is nothing more than a basic example of passwordless and usernameless authentication with WebAuthn.
 
 ## Application Structure
 The complete application contains two parts:
 
-1. Web API
-2. Frontend
+1. A web API ([webauthn-test-api](https://github.com/cmg2146/webauthn-test-api))
+2. Frontend (this repo)
 
 The frontend is implemented as a static web site using Vue.js and Nuxt.
 
-In production and development, the web API and frontend are hosted separately, but requests to the API are
+In production and development, the API and frontend are hosted separately, but requests to the API are
 proxied by the frontend server. This design allows Strict cookies to be used for authentication.
 In production, Nginx is used to serve the frontend and proxy requests to the API.
-
-The API is available in the `webauthn-test-api` repo.
 
 The frontend Vue app was created with the following npm command:
 
 ```npm init nuxt-app@latest webauthn-test-web```
 
 ## Build
-For development, make sure the API project is cloned first before continuing. Then, to run the complete solution, start the API before
-the frontend. Consult the API repo Readme to learn how to start the API.
-
-Once the API is running, the frontend can be run using Docker Linux containers by executing the following command at the repo root:
+For development, first clone the [webauthn-test-api](https://github.com/cmg2146/webauthn-test-api) repo and then
+start the API (consult the repo Readme to learn how to start it). Once the API is running, the frontend can
+be run using Docker Linux containers by executing the following command at the repo root:
 
 ```docker-compose up```
 
