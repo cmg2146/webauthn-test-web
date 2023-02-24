@@ -74,4 +74,3 @@ To delete a key, run:
 ## Notes
 
 * TODO: Setup Application Insights and Logging
-* TODO: Add device registration to register page (this will solve user prescence issue)
