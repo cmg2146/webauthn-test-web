@@ -12,13 +12,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  azureSubscription: 'sw-development-connection'
-  dockerRegistryServiceConnection: 'cmgdev-acr'
-  appName: 'webauthn-test'
-  apiAppName: 'webauthn-test-api'
-  containerRegistryNamespace: 'cmgdev.azurecr.io'
-  imageRepository: 'webauthn-test/web'
-  tag: $(Build.BuildNumber)
+- group: webauthn-test-web_Production
+- group: webauthn-test-web_DeploySettings
+- name: tag
+  value: $(Build.BuildNumber)
 
 stages:
 - stage: Deploy_Web
@@ -31,35 +28,50 @@ stages:
       displayName: Build Docker Image
       inputs:
         command: build
-        containerRegistry: $(dockerRegistryServiceConnection)
-        repository: $(imageRepository)
+        containerRegistry: $(CONTAINER_REGISTRY_SERVICE_CONNECTION)
+        repository: $(CONTAINER_IMAGE_REPOSITORY)
         tags: |
           $(tag)
           latest
         arguments: >
-          --build-arg NODE_ENV=production
+          --build-arg NODE_ENV=$(NODE_ENV)
     - task: Docker@2
       displayName: Push Docker Image
       inputs:
         command: push
-        containerRegistry: $(dockerRegistryServiceConnection)
-        repository: $(imageRepository)
+        containerRegistry: $(CONTAINER_REGISTRY_SERVICE_CONNECTION)
+        repository: $(CONTAINER_IMAGE_REPOSITORY)
         tags: |
           $(tag)
-          latest          
+          latest
+    # App settings will be "updated" on every deploy. This isn't necessary, but probably negligible
+    # in terms of deployment performance.
+    - task: AzureAppServiceSettings@1
+      displayName: Configure App Service Settings
+      inputs:
+        azureSubscription: $(AZURE_SERVICE_CONNECTION)
+        appName: $(APP_NAME)
+        appSettings: |
+          [
+            {
+              "name": "API_URL",
+              "value": "$(API_URL)",
+              "slotSetting": false
+            }
+          ]
     - task: AzureRmWebAppDeployment@4
       displayName: Deploy to App Service
       inputs:
         ConnectionType: 'AzureRM'
-        azureSubscription: $(azureSubscription)
+        azureSubscription: $(AZURE_SERVICE_CONNECTION)
         appType: 'webAppContainer'
-        WebAppName: $(appName)
-        DockerNamespace: $(containerRegistryNamespace)
-        DockerRepository: $(imageRepository)
+        WebAppName: $(APP_NAME)
+        DockerNamespace: $(CONTAINER_REGISTRY_NAMESPACE)
+        DockerRepository: $(CONTAINER_IMAGE_REPOSITORY)
         DockerImageTag: $(tag)
     - task: AzureAppServiceManage@0
       displayName: Restart App Service
       inputs:
-        azureSubscription: $(azureSubscription)
+        azureSubscription: $(AZURE_SERVICE_CONNECTION)
         action: Restart Azure App Service
-        webAppName: $(appName)
+        webAppName: $(APP_NAME)
