@@ -27,9 +27,11 @@ be run using Docker Linux containers by executing the following command at the r
 
 ...and then opening your browser to https://localhost:10000.
 
-If your browser warns the site is unsafe, either "proceed as unsafe" or trust the development certificate on your machine to avoid the
-warning again. The development certificate was created using the `dotnet dev-certs https` CLI command and must not be used in
-production!
+If your browser warns the site is unsafe, trust the development certificate on your machine to avoid the warning again.
+The app requires HTTPS, even in development, because it is a requirement for WebAuthn. The development certificate
+was created using the `dotnet dev-certs https` CLI command and must not be used in production!
+
+The startup order only matters for development. In production, the services can be started in any order.
 
 ### Configuration
 The following environment variables must be configured, at build time, for proper operation:
@@ -74,3 +76,4 @@ To delete a key, run:
 ## Notes
 
 * TODO: Setup Application Insights and Logging
+* TODO: get rid of startup order requirements in dev.
