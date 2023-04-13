@@ -33,13 +33,31 @@ was created using the `dotnet dev-certs https` CLI command and must not be used 
 
 The startup order only matters for development. In production, the services can be started in any order.
 
+In production, an Azure DevOps pipeline (azure-pipelines.yml) automatically runs when changes are made to the main branch.
+The pipeline requires the following variables to be configured to properly deploy the updated code:
+
+* AZURE_SERVICE_CONNECTION
+  * The name of the service connection to Azure. A service connection must be created in Azure DevOps
+  for the pipeline to communicate with Azure.
+* CONTAINER_REGISTRY_SERVICE_CONNECTION
+  * The name of the service connection to the Azure Container Registry (ACR). Docker images are pushed to this ACR.
+  A service connection must be created in Azure DevOps for the pipeline to communicate with the ACR.
+* CONTAINER_REGISTRY_NAMESPACE
+  * The host name of the container registry, for example "{your acr name}.azurecr.io"
+* CONTAINER_IMAGE_REPOSITORY
+  * The name of the Docker image, for example "webauthn-test/web"
+* APP_NAME
+  * The name of the Azure App Service that hosts the web frontend.
+
+Currently, the variables above are set in a variable group in Azure DevOps.
+
 ### Configuration
-The following environment variables must be configured, at build time, for proper operation:
+The following build-time environment variables must be configured for proper operation:
 
 * NODE_ENV
   * "development" or "production"
 
-The following environment variables must be configured, at run time, for proper operation:
+The following run-time environment variables must be configured for proper operation:
 * API_URL
   * The URL to the API, i.e. http://localhost:10001. This is only needed by the reverse
   proxy.
@@ -47,6 +65,8 @@ The following environment variables must be configured, at run time, for proper 
 For development, all environment variables have already been set in the docker compose file and can
 be tweaked as needed. Some other environment variables, not listed above, are required for development and
 have also been set in the docker-compose file.
+
+In production, the variables are set in a variable group in Azure DevOps.
 
 ## Managing Authenticator Credentials
 
@@ -75,5 +95,6 @@ To delete a key, run:
 
 ## Notes
 
-* TODO: Setup Application Insights and Logging
+* TODO: Upgrade to Nuxt/Vue 3. upgrade to Typescript.
+* TODO: Try out composition API.
 * TODO: get rid of startup order requirements in dev.
