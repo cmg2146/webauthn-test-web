@@ -12,7 +12,7 @@
         >
           <v-form
             ref="registerForm"
-            @submit.prevent="onSubmitRegistration"
+            @submit.prevent="onContinueRegistration"
           >
             <v-card-text>
               <v-text-field
@@ -20,35 +20,39 @@
                 :rules="[nameRules.required, nameRules.max]"
                 name="displayName"
                 label="Username/Account Name"
-                counter="255"
                 class="mb-3"
+                outlined
               />
               <v-text-field
                 v-model="firstName"
                 :rules="[nameRules.required, nameRules.max]"
                 name="displayName"
                 label="First Name"
-                counter="255"
                 class="mb-3"
+                outlined
               />
               <v-text-field
                 v-model="lastName"
                 :rules="[nameRules.required, nameRules.max]"
                 name="displayName"
                 label="Last Name"
-                counter="255"
                 class="mb-3"
+                outlined
               />
-            </v-card-text>
-            <v-card-text>
+              <div>
+                When clicking "Continue" below, you will be prompted to create a
+                credential on a device of your choice. You can select your current device
+                or an external device like a phone, if you're using your computer, or security key.
+              </div>
               <v-btn
                 block
                 color="primary"
                 :loading="registering"
                 :disabled="registering"
+                class="mt-5"
                 type="submit"
               >
-                Register
+                Continue
               </v-btn>
             </v-card-text>
           </v-form>
@@ -70,6 +74,8 @@
 </template>
 
 <script>
+import { startRegistration } from '@simplewebauthn/browser';
+
 export default {
   name: 'RegisterPage',
   auth: 'guest',
@@ -88,7 +94,7 @@ export default {
     };
   },
   methods: {
-    onSubmitRegistration () {
+    onContinueRegistration () {
       if (this.$refs.registerForm.validate()) {
         this.registering = true;
         this.registrationError = false;
@@ -100,14 +106,23 @@ export default {
         };
 
         return this
-          .$auth
-          .loginWith(
-            'cookie', {
-              url: '/api/webauthn/register-user',
-              method: 'post',
-              data: user
-            }
-          )
+          .$axios
+          // retrieve registration options/challenge first
+          .$post('/api/webauthn/signup-start', user)
+          // then start attestation ceremony
+          .then(createOptions => startRegistration(createOptions))
+          // then try to register credential from the authenticator response and login the user
+          .then((attestationResponse) => {
+            return this
+              .$auth
+              .loginWith(
+                'cookie', {
+                  url: '/api/webauthn/signup-finish',
+                  method: 'post',
+                  data: attestationResponse
+                }
+              );
+          })
           .catch((error) => {
             this.registering = false;
             this.registrationError = true;

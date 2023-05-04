@@ -25,10 +25,11 @@
             </v-card-text>
           </v-form>
           <v-card-text>
+            <span>Don't have an account? </span>
             <NuxtLink
               to="/register"
             >
-              Create an account
+              Register here.
             </NuxtLink>
           </v-card-text>
         </v-card>
